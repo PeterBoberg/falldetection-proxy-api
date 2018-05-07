@@ -3,12 +3,10 @@ package se.frost.falldetectionproxyapi.entities;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 
 @Entity
@@ -29,6 +27,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String lastName;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Contact> contacts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -75,6 +76,14 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
     @Override
