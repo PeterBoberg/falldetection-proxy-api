@@ -1,6 +1,9 @@
 package se.frost.falldetectionproxyapi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"User_id", "email"}),
@@ -9,13 +12,30 @@ import javax.persistence.*;
 @Embeddable
 public class Contact {
 
+    @NotNull
+    @NotEmpty
     private String firstName;
 
+    @NotNull
+    @NotEmpty
     private String lastName;
 
+    @Email
     private String email;
 
+    @NotNull
+    @NotEmpty
     private String phoneNumber;
+
+    public Contact() {
+    }
+
+    public Contact(@NotNull @NotEmpty String firstName, @NotNull @NotEmpty String lastName, @Email String email, @NotNull @NotEmpty String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getFirstName() {
         return firstName;

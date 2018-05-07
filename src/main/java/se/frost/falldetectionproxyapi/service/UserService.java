@@ -1,4 +1,8 @@
 package se.frost.falldetectionproxyapi.service;
 
-public class UserService {
+import org.springframework.stereotype.Service;
+import se.frost.falldetectionproxyapi.entities.User;
+
+@Service
+public interface UserService extends CrudService<User> {
 }

@@ -1,39 +1,55 @@
 package se.frost.falldetectionproxyapi.entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-public class User implements UserDetails {
+public class User implements DbEntity {
 
     @Id
     @GeneratedValue
     private long id;
 
     @Column(nullable = false, unique = true)
+    @NotNull
+    @NotEmpty
     private String username;
 
     @Column(nullable = false)
+    @NotNull
+    @NotEmpty
     private String password;
 
     @Column(nullable = false)
+    @NotNull
+    @NotEmpty
     private String firstName;
 
     @Column(nullable = false)
+    @NotNull
+    @NotEmpty
     private String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Contact> contacts;
+    @NotNull
+    List<Contact> contacts = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+    public User() {
+    }
+
+    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, @NotNull @NotEmpty String firstName, @NotNull @NotEmpty String lastName, @NotNull List<Contact> contacts) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contacts = contacts;
     }
 
     public long getId() {
@@ -44,7 +60,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -53,7 +68,6 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -84,25 +98,5 @@ public class User implements UserDetails {
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

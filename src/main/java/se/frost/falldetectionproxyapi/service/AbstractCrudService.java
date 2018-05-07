@@ -1,24 +1,46 @@
 package se.frost.falldetectionproxyapi.service;
 
-public abstract class AbstractCrudService<T> implements CrudService<T>{
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Service;
+import se.frost.falldetectionproxyapi.entities.DbEntity;
+import se.frost.falldetectionproxyapi.exceptions.ApiException;
+import se.frost.falldetectionproxyapi.exceptions.ExceptionType;
+
+import java.util.Optional;
+
+@Service
+public abstract class AbstractCrudService<T extends DbEntity> implements CrudService<T> {
 
     @Override
     public T create(T entity) {
-        return null;
+        return getRepository().save(entity);
     }
 
     @Override
     public T getById(long id) {
-        return null;
+        Optional<T> entity = getRepository().findById(id);
+        if (!entity.isPresent())
+            throw new ApiException(ExceptionType.RESOURCE_NOT_FOUND);
+        return entity.get();
     }
 
     @Override
     public T update(T entity) {
-        return null;
+        assertExisting(entity.getId());
+        return getRepository().save(entity);
     }
 
     @Override
-    public T deleteById(long id) {
-        return null;
+    public void deleteById(long id) {
+        assertExisting(id);
+        getRepository().deleteById(id);
     }
+
+    protected void assertExisting(long id) {
+        if (!getRepository().existsById(id))
+            throw new ApiException(ExceptionType.RESOURCE_NOT_FOUND);
+    }
+
+    protected abstract CrudRepository<T, Long> getRepository();
 }
