@@ -62,7 +62,7 @@ public class UserServiceTest {
         User mockUpdated = UserTestUtils.testUserWithId();
         mockUpdated.setFirstName("Bert");
         Mockito.when(userRepository.existsById(mockUpdated.getId())).thenReturn(true);
-        Mockito.when(userRepository.save(any())).thenReturn(mockUpdated);
+        Mockito.when(userRepository.save(any(User.class))).thenReturn(mockUpdated);
 
         // When
         User willBeUpdated = UserTestUtils.testUserWithId();

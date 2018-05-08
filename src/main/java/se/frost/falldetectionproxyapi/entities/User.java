@@ -1,11 +1,10 @@
 package se.frost.falldetectionproxyapi.entities;
 
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,33 +17,33 @@ public class User implements DbEntity {
     private long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull
-    @NotEmpty
+    @Size(min = 4, message = "Username must be at least 4 characters long")
     private String username;
 
     @Column(nullable = false)
-    @NotNull
-    @NotEmpty
+    @Size(min = 6, message = "password must be at least 6 characters long")
     private String password;
 
     @Column(nullable = false)
-    @NotNull
-    @NotEmpty
+    @Size(min = 1, message = "First name can not be empty")
     private String firstName;
 
     @Column(nullable = false)
-    @NotNull
-    @NotEmpty
+    @Size(min = 1, message = "Last name can not be empty")
     private String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @NotNull
-    List<Contact> contacts = new ArrayList<>();
+    private List<Contact> contacts = new ArrayList<>();
 
     public User() {
     }
 
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, @NotNull @NotEmpty String firstName, @NotNull @NotEmpty String lastName, @NotNull List<Contact> contacts) {
+    public User(String username,
+                String password,
+                String firstName,
+                String lastName,
+                List<Contact> contacts) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -99,4 +98,29 @@ public class User implements DbEntity {
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Collections.emptyList();
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }
