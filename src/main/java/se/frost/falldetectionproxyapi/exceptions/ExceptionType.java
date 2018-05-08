@@ -1,7 +1,8 @@
 package se.frost.falldetectionproxyapi.exceptions;
 
 public enum ExceptionType {
-    RESOURCE_NOT_FOUND("The resource could not be found");
+    RESOURCE_NOT_FOUND("The resource could not be found"),
+    INVALID_TOKEN("Token invalid or expired");
 
     private String message;
 

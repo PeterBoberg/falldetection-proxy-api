@@ -1,11 +1,12 @@
 package se.frost.falldetectionproxyapi.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.frost.falldetectionproxyapi.dto.request.LoginRequest;
+import se.frost.falldetectionproxyapi.dto.response.AuthResponse;
 import se.frost.falldetectionproxyapi.entities.User;
-import se.frost.falldetectionproxyapi.service.UserServiceImpl;
+import se.frost.falldetectionproxyapi.service.users.UserServiceImpl;
 
 import javax.validation.Valid;
 
@@ -15,28 +16,33 @@ public class UserResource {
 
     private UserServiceImpl userService;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User saved = userService.create(user);
-        return ResponseEntity.ok(saved);
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody User user) {
+        AuthResponse resp = userService.register(user);
+        return ResponseEntity.ok(resp);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        User found = userService.getById(id);
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        AuthResponse resp = userService.login(loginRequest);
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping
+    public ResponseEntity<User> getUserLoggedInUser() {
+        User found = userService.get();
         return ResponseEntity.ok(found);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @Valid @RequestBody User user) {
-        user.setId(id);
+    @PutMapping
+    public ResponseEntity<User> updateUserLoggedInUser(@Valid @RequestBody User user) {
         User updated = userService.update(user);
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
-        userService.deleteById(id);
+    @DeleteMapping
+    public ResponseEntity<User> deleteLoggedInUser() {
+        userService.delete();
         return ResponseEntity.ok().build();
     }
 

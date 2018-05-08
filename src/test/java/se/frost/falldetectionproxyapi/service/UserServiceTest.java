@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.frost.falldetectionproxyapi.entities.User;
 import se.frost.falldetectionproxyapi.exceptions.ApiException;
 import se.frost.falldetectionproxyapi.repositories.UserRepository;
+import se.frost.falldetectionproxyapi.service.users.UserService;
+import se.frost.falldetectionproxyapi.service.users.UserServiceImpl;
 import se.frost.falldetectionproxyapi.utils.UserTestUtils;
 
 import java.util.Optional;
@@ -91,7 +93,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(savedUser.getId())).thenReturn(Optional.of(savedUser));
 
         // When
-        User found = userService.getById(savedUser.getId());
+        User found = userService.get();
 
         // Then
         assertThat(found).isNotNull();
@@ -104,7 +106,7 @@ public class UserServiceTest {
         long idOfNonExistingUser = 1000;
 
         // When
-        userService.getById(idOfNonExistingUser);
+        userService.get();
     }
 
     @Test(expected = ApiException.class)
@@ -113,7 +115,7 @@ public class UserServiceTest {
         long idOfNonExistingUser = 1000;
 
         // When
-        userService.deleteById(idOfNonExistingUser);
+        userService.delete();
     }
 
     @After

@@ -1,4 +1,4 @@
-package se.frost.falldetectionproxyapi.dto;
+package se.frost.falldetectionproxyapi.dto.response;
 
 import se.frost.falldetectionproxyapi.exceptions.ExceptionType;
 

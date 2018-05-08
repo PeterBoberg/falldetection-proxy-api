@@ -8,9 +8,9 @@ public interface CrudService<T extends DbEntity> {
 
     T create(T entity);
 
-    T getById(long id);
+    T get();
 
     T update(T entity);
 
-    void deleteById(long id);
+    void delete();
 }

@@ -18,11 +18,12 @@ public abstract class AbstractCrudService<T extends DbEntity> implements CrudSer
     }
 
     @Override
-    public T getById(long id) {
-        Optional<T> entity = getRepository().findById(id);
-        if (!entity.isPresent())
-            throw new ApiException(ExceptionType.RESOURCE_NOT_FOUND);
-        return entity.get();
+    public T get() {
+//        Optional<T> entity = getRepository().findById(id);
+//        if (!entity.isPresent())
+//            throw new ApiException(ExceptionType.RESOURCE_NOT_FOUND);
+//        return entity.get();
+        return null;
     }
 
     @Override
@@ -32,9 +33,9 @@ public abstract class AbstractCrudService<T extends DbEntity> implements CrudSer
     }
 
     @Override
-    public void deleteById(long id) {
-        assertExisting(id);
-        getRepository().deleteById(id);
+    public void delete() {
+//        assertExisting(id);
+//        getRepository().deleteById(id);
     }
 
     protected void assertExisting(long id) {

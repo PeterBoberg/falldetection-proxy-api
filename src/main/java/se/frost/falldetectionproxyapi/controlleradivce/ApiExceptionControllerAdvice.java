@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import se.frost.falldetectionproxyapi.exceptions.ApiException;
-import se.frost.falldetectionproxyapi.dto.ErrorResponse;
+import se.frost.falldetectionproxyapi.dto.response.ErrorResponse;
 
 @ControllerAdvice
 public class ApiExceptionControllerAdvice {
