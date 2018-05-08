@@ -8,4 +8,8 @@ public class ApiException extends RuntimeException {
         super(type.getMessage());
         this.type = type;
     }
+
+    public ExceptionType getType() {
+        return type;
+    }
 }

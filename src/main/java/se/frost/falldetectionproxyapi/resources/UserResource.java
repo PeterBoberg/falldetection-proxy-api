@@ -10,8 +10,8 @@ import se.frost.falldetectionproxyapi.service.UserServiceImpl;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "users", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-public class UserResource  {
+@RequestMapping("/users")
+public class UserResource {
 
     private UserServiceImpl userService;
 
@@ -21,11 +21,24 @@ public class UserResource  {
         return ResponseEntity.ok(saved);
     }
 
-    @GetMapping
-    public String test() {
-        return "It works!";
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+        User found = userService.getById(id);
+        return ResponseEntity.ok(found);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @Valid @RequestBody User user) {
+        user.setId(id);
+        User updated = userService.update(user);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 
     @Autowired
     public void setUserService(UserServiceImpl userService) {
