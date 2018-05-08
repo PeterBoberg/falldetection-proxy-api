@@ -10,6 +10,13 @@ public class UserTestUtils {
     public final static String TEST_USER_PASSWORD = "password";
     public final static String TEST_USER_FIRST_NAME = "Testuser";
     public final static String TEST_USER_LAST_NAME = "Lastname";
+    public final static User TEST_USER_WITH_ID;
+    public final static User TEST_USER_WITHOUT_ID;
+
+    static {
+        TEST_USER_WITH_ID = testUserWithId();
+        TEST_USER_WITHOUT_ID = testUserWithoutId();
+    }
 
     public static User testUserWithId() {
         User user = testUserWithoutId();
