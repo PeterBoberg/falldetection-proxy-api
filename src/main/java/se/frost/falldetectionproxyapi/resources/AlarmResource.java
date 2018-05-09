@@ -18,7 +18,7 @@ public class AlarmResource {
     UserService userService;
 
     @RequestMapping
-    public ResponseEntity<String> sendAlarmForUser(){
+    public ResponseEntity<String> sendAlarmForCurrentUser(){
         alarmService.sendEmailAlarmForUser(userService.getCurrentUser());
         return ResponseEntity.ok("Alarm was sent");
     }
