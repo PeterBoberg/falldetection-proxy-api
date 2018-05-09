@@ -28,6 +28,11 @@ public class UserResource {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("It Works!");
+    }
+
     @GetMapping
     public ResponseEntity<User> getUserLoggedInUser() {
         User found = userService.get();

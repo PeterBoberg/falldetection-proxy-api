@@ -10,12 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import se.frost.falldetectionproxyapi.config.JWTTokenManager;
 import se.frost.falldetectionproxyapi.dto.request.LoginRequest;
 import se.frost.falldetectionproxyapi.dto.response.AuthResponse;
 import se.frost.falldetectionproxyapi.entities.User;
 import se.frost.falldetectionproxyapi.repositories.UserRepository;
 import se.frost.falldetectionproxyapi.service.AbstractCrudService;
+import se.frost.falldetectionproxyapi.service.token.JWTTokenService;
 
 @Component
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService, UserDetailsService {
@@ -23,13 +23,13 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
     private BCryptPasswordEncoder passwordEncoder;
-    private JWTTokenManager jwtTokenManager;
+    private JWTTokenService jwtTokenService;
 
     @Override
     public AuthResponse register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
-        String token = jwtTokenManager.createToken(savedUser);
+        String token = jwtTokenService.createToken(savedUser);
         return new AuthResponse(token, user);
     }
 
@@ -37,7 +37,7 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     public AuthResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = (User) authentication.getPrincipal();
-        String token = jwtTokenManager.createToken(user);
+        String token = jwtTokenService.createToken(user);
         return new AuthResponse(token, user);
     }
 
@@ -70,7 +70,7 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     }
 
     @Autowired
-    public void setJwtTokenManager(JWTTokenManager jwtTokenManager) {
-        this.jwtTokenManager = jwtTokenManager;
+    public void setJwtTokenService(JWTTokenService jwtTokenService) {
+        this.jwtTokenService = jwtTokenService;
     }
 }

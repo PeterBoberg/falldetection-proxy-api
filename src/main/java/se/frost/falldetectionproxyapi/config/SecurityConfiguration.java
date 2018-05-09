@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private JWTAuthenticationFilter authenticationFilter;
+    private JWTAuthenticationEntryPoint entryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -24,12 +25,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/users/register").permitAll()
-                .antMatchers(HttpMethod.POST,"/users/login").permitAll()
-                .antMatchers(HttpMethod.GET,"/health").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(entryPoint);
     }
 
 
@@ -42,5 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setAuthenticationFilter(JWTAuthenticationFilter authenticationFilter) {
         this.authenticationFilter = authenticationFilter;
+    }
+
+    @Autowired
+    public void setEntryPoint(JWTAuthenticationEntryPoint entryPoint) {
+        this.entryPoint = entryPoint;
     }
 }

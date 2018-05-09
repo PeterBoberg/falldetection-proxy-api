@@ -7,8 +7,6 @@ import se.frost.falldetectionproxyapi.entities.DbEntity;
 import se.frost.falldetectionproxyapi.exceptions.ApiException;
 import se.frost.falldetectionproxyapi.exceptions.ExceptionType;
 
-import java.util.Optional;
-
 @Service
 public abstract class AbstractCrudService<T extends DbEntity> implements CrudService<T> {
 

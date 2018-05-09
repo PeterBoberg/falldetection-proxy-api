@@ -1,56 +1,46 @@
 package se.frost.falldetectionproxyapi.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import se.frost.falldetectionproxyapi.dto.response.ErrorResponse;
-import se.frost.falldetectionproxyapi.entities.User;
-import se.frost.falldetectionproxyapi.exceptions.ExceptionType;
+import se.frost.falldetectionproxyapi.service.token.JWTTokenService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
     private AuthenticationManager authenticationManager;
-    private JWTTokenManager jwtTokenManager;
+    private JWTTokenService jwtTokenService;
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("JWT AuthenticationFilter do Filter");
-        String token = jwtTokenManager.resolveToken((HttpServletRequest) req);
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException, AuthenticationException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        String token = jwtTokenService.resolveToken(request);
 
-        if (token != null) {
-            if (jwtTokenManager.isValid(token)) {
-                User currentUser = jwtTokenManager.resolveUser(token);
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(currentUser.getUsername(), currentUser.getPassword()));
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(currentUser, currentUser.getPassword()));
-            } else {
-                ObjectMapper objectMapper = new ObjectMapper();
-                HttpServletResponse response = (HttpServletResponse) resp;
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getOutputStream().write(objectMapper.writeValueAsBytes(new ErrorResponse(ExceptionType.INVALID_TOKEN)));
-                return;
-            }
+        if (isSecurePathAndTokenNotNull(request, token))
+            if (jwtTokenService.isValid(token)) {
+            SecurityContextHolder.getContext().setAuthentication(jwtTokenService.getAuthentication(token));
         }
         filterChain.doFilter(req, resp);
     }
 
+    // TODO: See if you can find another solution for this
+    private boolean isSecurePathAndTokenNotNull(HttpServletRequest req, String token) {
+        return token != null && !req.getRequestURI().contains("/login") && !req.getRequestURI().contains("/register");
+    }
+
     @Autowired
-    public void setJwtTokenManager(JWTTokenManager jwtTokenManager) {
-        this.jwtTokenManager = jwtTokenManager;
+    public void setJwtTokenService(JWTTokenService jwtTokenService) {
+        this.jwtTokenService = jwtTokenService;
     }
 
     @Autowired
