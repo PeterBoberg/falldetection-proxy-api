@@ -1,6 +1,8 @@
 package se.frost.falldetectionproxyapi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +22,12 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
-        ErrorResponse errorResponse = new ErrorResponse(ExceptionType.INVALID_CREDENTIALS);
+        ErrorResponse errorResponse = null;
+        if (e instanceof InsufficientAuthenticationException)
+            errorResponse = new ErrorResponse(ExceptionType.UNAUTHORIZED);
+        if (e instanceof BadCredentialsException)
+            errorResponse = new ErrorResponse(ExceptionType.BAD_CREDENTIALS);
+
         resp.getOutputStream().write(new ObjectMapper().writeValueAsBytes(errorResponse));
     }
 }
