@@ -127,7 +127,7 @@ public class User implements DbEntity, UserDetails, Serializable {
         return true;
     }
 
-    public void copyFrom(User other) {
+    public void copyValuesFrom(User other) {
         this.username = other.username;
         this.firstName = other.firstName;
         this.lastName = other.lastName;

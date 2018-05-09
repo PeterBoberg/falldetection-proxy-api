@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User updateCurrentUser(User user) {
         User currentUser = authService.getCurrentUser();
-        currentUser.copyFrom(user);
+        currentUser.copyValuesFrom(user);
         return hidePasswordForUser(userRepository.save(currentUser));
     }
 
