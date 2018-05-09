@@ -44,8 +44,9 @@ public class AlarmServiceImpl implements AlarmService {
                 receiverContact.getFirstName() + " " +
                 receiverContact.getLastName() + "," + LINE_BREAK_DELIMITER +
                 LINE_BREAK_DELIMITER +
-                "Your friend " + user.getFirstName() + " " + user.getLastName() +
-                " is in trouble.";
+                "A test fall has been detected for " + user.getFirstName() + " " + user.getLastName() + LINE_BREAK_DELIMITER
+                + LINE_BREAK_DELIMITER +
+                "This is an automated test. If you have received this email and don't know what it is, you can simply ignore it.";
     }
 
     private String getMailSubject(User user){
