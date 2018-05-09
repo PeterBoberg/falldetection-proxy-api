@@ -1,6 +1,7 @@
 package se.frost.falldetectionproxyapi.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,10 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -127,5 +125,12 @@ public class User implements DbEntity, UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void copyFrom(User other) {
+        this.username = other.username;
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.contacts = new ArrayList<>(other.contacts);
     }
 }

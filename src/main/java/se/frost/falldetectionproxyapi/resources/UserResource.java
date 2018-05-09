@@ -34,20 +34,18 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<User> getUserLoggedInUser() {
-        User found = userService.get();
-        return ResponseEntity.ok(found);
+    public ResponseEntity<User> getLoggedInUser() {
+        return ResponseEntity.ok(userService.getCurrentUser());
     }
 
     @PutMapping
-    public ResponseEntity<User> updateUserLoggedInUser(@Valid @RequestBody User user) {
-        User updated = userService.update(user);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<User> updateLoggedInUser(@Valid @RequestBody User user) {
+        return ResponseEntity.ok(userService.updateCurrentUser(user));
     }
 
     @DeleteMapping
     public ResponseEntity<User> deleteLoggedInUser() {
-        userService.delete();
+        userService.deleteCurrentUser();
         return ResponseEntity.ok().build();
     }
 
