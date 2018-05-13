@@ -28,6 +28,7 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if (e instanceof BadCredentialsException)
             errorResponse = new ErrorResponse(ExceptionType.BAD_CREDENTIALS);
 
+        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         resp.getOutputStream().write(new ObjectMapper().writeValueAsBytes(errorResponse));
     }
 }
