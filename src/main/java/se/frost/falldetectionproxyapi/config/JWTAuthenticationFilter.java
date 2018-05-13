@@ -36,7 +36,10 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 
     // TODO: See if you can find another solution for this
     private boolean isSecurePathAndTokenNotNull(HttpServletRequest req, String token) {
-        return token != null && !req.getRequestURI().contains("/login") && !req.getRequestURI().contains("/register");
+        return token != null &&
+                !req.getRequestURI().contains("/login") &&
+                !req.getRequestURI().contains("/register") &&
+                !req.getRequestURI().contains("/health");
     }
 
     @Autowired

@@ -9,17 +9,24 @@ import se.frost.falldetectionproxyapi.service.users.UserService;
 
 @RestController
 @RequestMapping("/alarm")
-public class AlarmResource {
+public class  AlarmResource {
 
-    @Autowired
-    AlarmService alarmService;
-
-    @Autowired
-    UserService userService;
+    private AlarmService alarmService;
+    private UserService userService;
 
     @RequestMapping
     public ResponseEntity<String> sendAlarmForCurrentUser(){
         alarmService.sendEmailAlarmForUser(userService.getCurrentUser());
         return ResponseEntity.ok("Alarm was sent");
+    }
+
+    @Autowired
+    public void setAlarmService(AlarmService alarmService) {
+        this.alarmService = alarmService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }
