@@ -2,27 +2,30 @@ package se.frost.falldetectionproxyapi.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.frost.falldetectionproxyapi.service.alarm.AlarmService;
+import se.frost.falldetectionproxyapi.dto.request.AlarmRequest;
+import se.frost.falldetectionproxyapi.service.alarm.MailService;
 import se.frost.falldetectionproxyapi.service.users.UserService;
 
 @RestController
 @RequestMapping("/alarm")
-public class  AlarmResource {
+public class AlarmResource {
 
-    private AlarmService alarmService;
+    private MailService mailService;
     private UserService userService;
 
-    @RequestMapping
-    public ResponseEntity<String> sendAlarmForCurrentUser(){
-        alarmService.sendEmailAlarmForUser(userService.getCurrentUser());
+    @PostMapping
+    public ResponseEntity<String> sendAlarmForCurrentUser(@RequestBody AlarmRequest alarmRequest) {
+        mailService.sendEmailAlarmForUser(userService.getCurrentUser(), alarmRequest);
         return ResponseEntity.ok("Alarm was sent");
     }
 
     @Autowired
-    public void setAlarmService(AlarmService alarmService) {
-        this.alarmService = alarmService;
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
     }
 
     @Autowired

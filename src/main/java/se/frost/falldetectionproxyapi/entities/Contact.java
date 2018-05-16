@@ -1,8 +1,6 @@
 package se.frost.falldetectionproxyapi.entities;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -69,5 +67,9 @@ public class Contact {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getFullname() {
+        return firstName + " " + lastName;
     }
 }

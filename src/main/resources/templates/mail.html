@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<section>
+    <h2>Hello <span th:text="${contact.getFullname()}"></span>!</h2>
+    <h3>A test fall has been detected for <span th:text="${user.getFullName()}"></span></h3>
+    <h3>The location of <span th:text="${user.getFullName()}"></span> is <span th:text="${alarmRequest.prettyString()}"></span></h3>
+    Click on the map to show location details
+    <br/>
+</section>
+
+<section>
+    <a th:href="${'https://www.google.com/maps/search/?api=1&query='+ alarmRequest.getLatitude()+ ','+ alarmRequest.getLongitude() +'&zoom=14'}">
+        <img th:src="${'https://maps.googleapis.com/maps/api/staticmap?center='+
+alarmRequest.getLatitude() + ',' + alarmRequest.getLongitude() + '&zoom=16&markers=color:red%7C'+
+alarmRequest.getLatitude() +','+ alarmRequest.getLongitude() +
+'&size=350x350&maptype=roadmap&key=AIzaSyD0obvYq043FpJFr-9p3Q_BB40U9dXqwD8'}"/>
+    </a>
+</section>
+
+<section>
+    <h5>Note: This mail is sent for testing purpouses, if you don't recognize why you should have gotten this email, you can simply ignore and delete it!</h5>
+</section>
+</body>
+</html>

@@ -122,6 +122,11 @@ public class User implements DbEntity, UserDetails, Serializable {
         return true;
     }
 
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public boolean isEnabled() {
         return true;

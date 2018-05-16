@@ -12,10 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
+import se.frost.falldetectionproxyapi.dto.request.AlarmRequest;
 import se.frost.falldetectionproxyapi.entities.Contact;
 import se.frost.falldetectionproxyapi.entities.User;
-import se.frost.falldetectionproxyapi.service.alarm.AlarmService;
-import se.frost.falldetectionproxyapi.service.alarm.AlarmServiceImpl;
+import se.frost.falldetectionproxyapi.service.alarm.MailService;
+import se.frost.falldetectionproxyapi.service.alarm.MailServiceImpl;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,18 +27,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringRunner.class)
-public class AlarmServiceTest {
+public class MailServiceTest {
 
     @TestConfiguration
-    static class AlarmServiceTestConfig {
+    static class MailServiceTestConfig {
         @Bean
-        public AlarmServiceImpl alarmService() {
-            return new AlarmServiceImpl();
+        public MailServiceImpl alarmService() {
+            return new MailServiceImpl();
         }
     }
 
     @Autowired
-    AlarmService alarmService;
+    MailService mailService;
 
     @MockBean
     private JavaMailSender javaMailSender;
@@ -59,7 +60,7 @@ public class AlarmServiceTest {
 
         Mockito.doAnswer(invocation -> {
             SimpleMailMessage message = invocation.getArgument(0);
-            assertThat(message.getFrom()).isEqualTo(alarmService.getSender());
+            assertThat(message.getFrom()).isEqualTo(mailService.getSender());
             Assert.assertTrue("Message did not contain user's full name.", message.getText().contains("Kalle Kula"));
             Assert.assertTrue("Message did not contain receiver's full name.", message.getText().contains("Ylva Bertilsson") || message.getText().contains("Bertil Svensson"));
 
@@ -77,7 +78,7 @@ public class AlarmServiceTest {
 
         // When
         try {
-            alarmService.sendEmailAlarmForUser(user);
+            mailService.sendEmailAlarmForUser(user, new AlarmRequest(59.11, 11.45));
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
