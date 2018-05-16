@@ -1,5 +1,7 @@
 package se.frost.falldetectionproxyapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -69,6 +71,7 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
+    @JsonIgnore
     public String getFullname() {
         return firstName + " " + lastName;
     }

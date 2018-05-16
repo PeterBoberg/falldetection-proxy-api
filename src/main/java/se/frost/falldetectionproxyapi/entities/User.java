@@ -123,6 +123,7 @@ public class User implements DbEntity, UserDetails, Serializable {
     }
 
 
+    @JsonIgnore
     public String getFullName() {
         return firstName + " " + lastName;
     }
